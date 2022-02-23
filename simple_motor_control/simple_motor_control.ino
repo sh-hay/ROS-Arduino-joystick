@@ -1,46 +1,31 @@
-#include <ros.h>
-// #include <std_msgs/Empty.h>
-#include <geometry_msgs/Twist.h>
-
 #define motorPinA 7
 #define motorPinB 8
 #define motorPWMpin  9
-// #define motorPWMpin  9
 
-const int pwm_range = 30;
+const int analogPin = 0; // ポテンショメータのワイプ(中央の端子)を接続する
+                       // 両端はグランドと+5Vに接続
+int val = 0;           // 読み取った値を格納する変数
 
-ros::NodeHandle nh;
+void setup() {
+  pinMode(motorPinA, OUTPUT);
+  pinMode(motorPinB, OUTPUT);
+  Serial.begin(115200);        // シリアル通信の初期化
+}
 
-// void messageCb( const std_msgs::Empty& toggle_msg) {
-void messageCb( const geometry_msgs::Twist& cmd_vel) {
-  // static float PWM_val = 0;
-  // PWM_val = pwm_range*cmd_vel.linear.x;
+void loop() {
+  val = analogRead(analogPin)/4;    // アナログピンを読み取る
+  Serial.println(val);
+  // delay(200);
   digitalWrite( motorPinA, HIGH );
   digitalWrite( motorPinB, LOW  );
-  analogWrite( motorPWMpin, cmd_vel.linear.x );
-  // analogWrite( motorPWMpin, PWM_val );
+  analogWrite( motorPWMpin, val );
 }
-
-ros::Subscriber<geometry_msgs::Twist> sub("cmd_vel", &messageCb );
-// ros::Subscriber<std_msgs::Empty> sub("toggle_led", &messageCb );
-
-void setup(){
-  pinMode(13, OUTPUT);
-  digitalWrite(13, HIGH); 
-  nh.initNode();
-  nh.subscribe(sub);
-}
-
-void loop(){
-  nh.spinOnce();
-  delay(1);
-}
-
-
 
 // #define motorPinA 7
 // #define motorPinB 8
 // #define motorPWMpin  9
+
+
 
 // void setup() {
 //   // put your setup code here, to run once:
@@ -51,6 +36,7 @@ void loop(){
 // }
 
 // void loop() {
+//   int pwm_val = analogRead()
 //   digitalWrite( motorPinA, HIGH );
 //   digitalWrite( motorPinB, LOW  );
 //   analogWrite( motorPWMpin, 100 );
