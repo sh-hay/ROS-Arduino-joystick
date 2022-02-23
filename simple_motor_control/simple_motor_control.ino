@@ -1,6 +1,6 @@
-#define motorPinA 7
-#define motorPinB 8
-#define motorPWMpin  9
+#define motorPinA 8
+#define motorPinB 9
+#define motorPWMpin 10
 
 const int analogPin = 0; // ポテンショメータのワイプ(中央の端子)を接続する
                        // 両端はグランドと+5Vに接続
@@ -13,7 +13,9 @@ void setup() {
 }
 
 void loop() {
-  val = analogRead(analogPin)/4;    // アナログピンを読み取る
+  val = analogRead(analogPin);    // アナログピンを読み取る
+  if(val > 800) val = 800;
+  val = map(val,0,800,0,255);
   Serial.println(val);
   // delay(200);
   digitalWrite( motorPinA, HIGH );
