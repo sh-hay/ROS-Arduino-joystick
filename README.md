@@ -24,6 +24,10 @@ $ rosrun rosserial_arduino make_libraries.py .
 $ cd
 $ docker build -t shhay/ros-joy .
 $ docker run -it --rm -v $(pwd)/arduino:/home/DockerUser/ --device=/dev/ttyACM0:/dev/ttyACM0 --name ros-joy shhay/ros-joy
+
+$ roscore
+$ rosrun rosserial_python serial_node.py /dev/ttyACM0
+$ rostopic pub -r 30 /cmd_vel geometry_msgs/Twist -- '[0.2, 0.0, 0.0]' '[0.0, 0.0, 0.0]'
 # -v $(pwd)/arduino:/home/DockerUser/
 ```
 
